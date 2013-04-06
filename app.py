@@ -5,24 +5,34 @@ import json
 import yaml
 import time
 import re
-import os
 import argparse
- 
+
 from collections import OrderedDict
 
 from flask import Flask, Response, request, render_template
 from simmetrica import Simmetrica
 
 parser = argparse.ArgumentParser(description='Start Simmetrica web application')
-parser.add_argument('-c', '--config', dest='configFile', default='config.yml',
-                   help='Run with the specified config file (default: config.yml)')
+parser.add_argument('-c', '--config', dest='configFile',
+                    default='config.yml',
+                    help='Run with the specified config file (default: config.yml)'
+                    )
+parser.add_argument('-rh', '--redis_host', dest='redisHost',
+                    default=None,
+                    help='Connect to redis on the specified host')
+parser.add_argument('-rp', '--redis_port', dest='redisPort',
+                    default=None,
+                    help='Connect to redis on the specified port')
+parser.add_argument('-rd', '--redis_db', dest='redisDb', default=None,
+                    help='Connect to the specified db in redis')
+
 args = parser.parse_args()
 
 app = Flask(__name__)
 simmetrica = Simmetrica(
-    os.getenv('REDIS_HOST'),
-    os.getenv('REDIS_PORT'),
-    os.getenv('REDIS_DB')
+    args.redisHost,
+    args.redisPort,
+    args.redisDb
 )
 
 @app.route('/')
