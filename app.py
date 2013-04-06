@@ -25,6 +25,9 @@ parser.add_argument('-rp', '--redis_port', dest='redisPort',
                     help='Connect to redis on the specified port')
 parser.add_argument('-rd', '--redis_db', dest='redisDb', default=None,
                     help='Connect to the specified db in redis')
+parser.add_argument('-d', '--debug', dest='debug', default=False,
+                    help='Run the app in debug mode',
+                    action='store_true')
 
 args = parser.parse_args()
 
@@ -102,4 +105,4 @@ def get_seconds_from_relative_time(string):
     else: raise ValueError("Invalid unit '%s'" % string)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=args.debug)
